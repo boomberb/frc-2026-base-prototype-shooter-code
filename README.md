@@ -4,7 +4,7 @@
 Code for the prototype shooter in development by FRC team 6934.
 
 ## Instructions
-- If you haven't already, follow the instructions [here]([https://pages.github.com/](https://docs.google.com/document/d/1eedUyfvkjzmU6tbYUwKPUUhlUWrYmRvimY3AveSH14w/edit?tab=t.0)) first.
+- If you haven't already, follow the instructions [here](https://docs.google.com/document/d/1eedUyfvkjzmU6tbYUwKPUUhlUWrYmRvimY3AveSH14w/edit?tab=t.0) first.
 - Make sure the motor IDs in code match those read by Phoenix Tuner X.
 - By going into Constants, you can change each motor's voltage by setting them anywhere from 0-12.
 
