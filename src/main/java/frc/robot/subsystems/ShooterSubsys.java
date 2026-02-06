@@ -7,12 +7,12 @@ import frc.robot.Robot;
 import frc.robot.Constants.MotorOneConstants;
 import frc.robot.Constants.MotorTwoConstants;
 
-public class Motor extends SubsystemBase {
+public class ShooterSubsys extends SubsystemBase {
 
     private TalonFX motorOne;
     private TalonFX motorTwo;
 
-    public Motor() {
+    public ShooterSubsys() {
         
         motorOne = new TalonFX(0);
         motorOne.getConfigurator().apply(Robot.ctreConfigs.motorOneConfig);

@@ -5,19 +5,19 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.Motor;
+import frc.robot.subsystems.ShooterSubsys;
 
-public class MotorAction extends Command {
+public class Shooter extends Command {
 
-    private Motor m_Motor;
+    private ShooterSubsys s_Shooter;
     private DoubleSupplier speedSup;
 
-    public MotorAction (Motor m_Motor, DoubleSupplier speedSup) {       
+    public Shooter (ShooterSubsys s_Shooter, DoubleSupplier speedSup) {       
         
-        this.m_Motor = m_Motor;
+        this.s_Shooter = s_Shooter;
         this.speedSup = speedSup;
 
-        addRequirements(m_Motor);
+        addRequirements(s_Shooter);
 
     }
 
@@ -29,7 +29,7 @@ public class MotorAction extends Command {
     @Override
     public void execute() {
         
-        m_Motor.setMotorSpeed(MathUtil.applyDeadband(speedSup.getAsDouble(), Constants.QuickTuning.weaponAnalogDeadband));
+        s_Shooter.setMotorSpeed(MathUtil.applyDeadband(speedSup.getAsDouble(), Constants.QuickTuning.weaponAnalogDeadband));
 
     }
 
@@ -43,7 +43,7 @@ public class MotorAction extends Command {
     @Override
     public void end(boolean interrupted) {
 
-        m_Motor.brakeMotor();
+        s_Shooter.brakeMotor();
 
     }
 }

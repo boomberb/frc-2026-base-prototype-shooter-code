@@ -11,7 +11,7 @@ import frc.robot.Constants.QuickTuning;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
 
@@ -20,15 +20,15 @@ public class RobotContainer {
 
   // weapon controls
   private final int motorSpeedAxis = XboxController.Axis.kLeftY.value;
-  private final JoystickButton TimedMotor = new JoystickButton(weapons, XboxController.Button.kA.value);
+  // private final JoystickButton otherCommand = new JoystickButton(weapons, XboxController.Button.kA.value);
   
   // subsystems
-  private final Motor m_Motor = new Motor();
+  private final ShooterSubsys m_Motor = new ShooterSubsys();
 
   /* Robot Container */
   public RobotContainer() {
 
-    m_Motor.setDefaultCommand(new MotorAction(m_Motor, () -> -weapons.getRawAxis(motorSpeedAxis)));
+    m_Motor.setDefaultCommand(new Shooter(m_Motor, () -> -weapons.getRawAxis(motorSpeedAxis)));
     
     // Configure the trigger bindings
     configureBindings();
@@ -36,7 +36,6 @@ public class RobotContainer {
 
   // button bindings
   private void configureBindings() {
-    TimedMotor.onTrue(new TimedMotor(m_Motor));
 
   }
 
