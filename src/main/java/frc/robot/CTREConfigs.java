@@ -10,10 +10,10 @@ public final class CTREConfigs {
     public CTREConfigs() {
         // motor configurator
         // invert and neutral mode
-        motorOneConfig.MotorOutput.Inverted = Constants.MotorOneConstants.motorInvert;
-        motorOneConfig.MotorOutput.NeutralMode = Constants.MotorOneConstants.motorNeutral; 
+        motorOneConfig.MotorOutput.Inverted = Constants.ShooterConstants.motorInvert;
+        motorOneConfig.MotorOutput.NeutralMode = Constants.ShooterConstants.motorNeutral; 
 
-        motorTwoConfig.MotorOutput.Inverted = Constants.MotorTwoConstants.motorInvert;
-        motorTwoConfig.MotorOutput.NeutralMode = Constants.MotorTwoConstants.motorNeutral; 
+        motorTwoConfig.MotorOutput.Inverted = Constants.ShooterConstants.motorInvert;
+        motorTwoConfig.MotorOutput.NeutralMode = Constants.ShooterConstants.motorNeutral; 
     }
 }
