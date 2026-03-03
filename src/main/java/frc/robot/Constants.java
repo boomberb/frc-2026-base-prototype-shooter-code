@@ -25,18 +25,34 @@ public final class Constants {
 
   }
 
+  public static final class IntakeConstants {
+    //public static final int
+  }
+
+  public static final class FeederConstants {
+
+    public static final int kickerMotorID = 9;
+    public static final int conveyorMotorID = 12;
+
+    public static final double maxVoltage = 12;
+
+    public static final double reversalVoltagePercentage = 0.5;
+    public static final double reversalTimeout = 0.25;
+
+  }
+
   public static final class ShooterConstants {
 
-    public static final int motorOneID = 0;
-    public static final int motorTwoID = 11;
-    public static final boolean motorTwoOpposeLeader = false;
+    public static final int topMotorID = 10;
+    public static final int bottomMotorID = 11;
+    public static final boolean bottomMotorOpposeLeader = false;
 
-    public static final double maxVoltage = 9;
-    public static final double targetRPM = 6000;
+    public static final double maxVoltage = 12;
+    public static final double targetRPM = 3000;
     public static final double targetRPS = targetRPM / 60;
     public static final double loopPeriodSecs = 0.02;
     public static final double maxAccelRPS2 = 250.0;
-    public static final InvertedValue motorInvert = InvertedValue.CounterClockwise_Positive;
+    public static final InvertedValue motorInvert = InvertedValue.Clockwise_Positive;
     public static final NeutralModeValue motorNeutral = NeutralModeValue.Brake;
 
     //pid😎

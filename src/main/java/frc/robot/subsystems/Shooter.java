@@ -4,67 +4,76 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
 
-    private TalonFX motorOne;
-    private TalonFX motorTwo;
-    private Follower motorTwoFollowRequest;
+    private final TalonFX topMotor;
+    private final TalonFX bottomMotor;
+    private final Follower bottomMotorFollowRequest;
 
     public Shooter() {
         
-        motorOne = new TalonFX(ShooterConstants.motorOneID);
-        motorOne.getConfigurator().apply(Robot.ctreConfigs.motorOneConfig);
-        motorTwo = new TalonFX(ShooterConstants.motorTwoID);
-        motorTwo.getConfigurator().apply(Robot.ctreConfigs.motorTwoConfig);
-        MotorAlignmentValue motorTwoAlignment;
-        if (ShooterConstants.motorTwoOpposeLeader) {
-            motorTwoAlignment = MotorAlignmentValue.Opposed;
+        topMotor = new TalonFX(ShooterConstants.topMotorID);
+        topMotor.getConfigurator().apply(Robot.ctreConfigs.topMotorConfig);
+        bottomMotor = new TalonFX(ShooterConstants.bottomMotorID);
+        bottomMotor.getConfigurator().apply(Robot.ctreConfigs.bottomMotorConfig);
+        MotorAlignmentValue bottomMotorAlignment;
+        if (ShooterConstants.bottomMotorOpposeLeader) {
+            bottomMotorAlignment = MotorAlignmentValue.Opposed;
         } else {
-            motorTwoAlignment = MotorAlignmentValue.Aligned;
+            bottomMotorAlignment = MotorAlignmentValue.Aligned;
         }
-        motorTwoFollowRequest = new Follower(ShooterConstants.motorOneID, motorTwoAlignment);
-        motorTwo.setControl(motorTwoFollowRequest); //hello i am mike
+        bottomMotorFollowRequest = new Follower(ShooterConstants.topMotorID, bottomMotorAlignment);
+        bottomMotor.setControl(bottomMotorFollowRequest);
 
     }
 
-    public void setMotorOneSpeed(double speedPID) {
+    public void setTopMotorVoltage(double topMotorVolts) {
 
-        motorOne.setVoltage(ShooterConstants.maxVoltage * speedPID);
+        // Keep top motor following in case any other control request interrupted follower mode.
+        bottomMotor.setControl(bottomMotorFollowRequest);
+        topMotor.setVoltage(MathUtil.clamp(topMotorVolts, -ShooterConstants.maxVoltage, ShooterConstants.maxVoltage));
 
     }
 
-    public double getMotorOneVelocityInRPS() {
+    public void setTopMotorSpeed(double speedCommand) {
+
+        setTopMotorVoltage(ShooterConstants.maxVoltage * speedCommand);
+
+    }
+
+    public double getTopMotorVelocityInRPS() {
         
-        return motorOne.getVelocity().getValueAsDouble();
+        return topMotor.getVelocity().getValueAsDouble();
 
     }
 
-    public double getMotorTwoVelocityInRPS() {
+    public double getBottomMotorVelocityInRPS() {
 
-        return motorTwo.getVelocity().getValueAsDouble();
-
-    }
-
-    public double getMotorOnePosition() {
-
-        return motorOne.getPosition().getValueAsDouble();
+        return bottomMotor.getVelocity().getValueAsDouble();
 
     }
 
-    public double getMotorTwoPosition() {
+    public double getTopMotorPosition() {
 
-        return motorTwo.getPosition().getValueAsDouble();
+        return topMotor.getPosition().getValueAsDouble();
+
+    }
+
+    public double getBottomMotorPosition() {
+
+        return bottomMotor.getPosition().getValueAsDouble();
 
     }
 
     public void brake() {
 
-        motorOne.setVoltage(0);
-        motorTwo.setControl(motorTwoFollowRequest);
+        topMotor.setVoltage(0);
+        bottomMotor.setVoltage(0);
 
     }
 

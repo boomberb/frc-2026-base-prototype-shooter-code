@@ -9,18 +9,18 @@ import frc.robot.subsystems.Shooter;
 
 public class TeleopShooter extends Command {
 
-    private Shooter s_Shooter;
-    PIDController motorOnePIDController;
-    SimpleMotorFeedforward motorOneFF;
-    TrapezoidProfile velocityProfile;
-    TrapezoidProfile.State setpointState;
-    TrapezoidProfile.State goalState;
+    private final Shooter s_Shooter;
+    private final PIDController topMotorPIDController;
+    private final SimpleMotorFeedforward topMotorFF;
+    private final TrapezoidProfile velocityProfile;
+    private TrapezoidProfile.State setpointState;
+    private final TrapezoidProfile.State goalState;
 
     public TeleopShooter (Shooter s_Shooter) {       
         
         this.s_Shooter = s_Shooter;
-        motorOnePIDController = new PIDController(ShooterConstants.kP1, ShooterConstants.kI1, ShooterConstants.kD1);
-        motorOneFF = new SimpleMotorFeedforward(ShooterConstants.kS1, ShooterConstants.kV1, ShooterConstants.kA1);
+        topMotorPIDController = new PIDController(ShooterConstants.kP1, ShooterConstants.kI1, ShooterConstants.kD1);
+        topMotorFF = new SimpleMotorFeedforward(ShooterConstants.kS1, ShooterConstants.kV1, ShooterConstants.kA1);
         velocityProfile = new TrapezoidProfile(
             new TrapezoidProfile.Constraints(ShooterConstants.targetRPS, ShooterConstants.maxAccelRPS2)
         );
@@ -33,9 +33,9 @@ public class TeleopShooter extends Command {
 
     @Override
     public void initialize() {
-        double initialVelocityRPS = s_Shooter.getMotorOneVelocityInRPS();
+        double initialVelocityRPS = s_Shooter.getTopMotorVelocityInRPS();
         setpointState = new TrapezoidProfile.State(initialVelocityRPS, 0.0);
-        motorOnePIDController.reset();
+        topMotorPIDController.reset();
     }
 
     @Override
@@ -44,15 +44,15 @@ public class TeleopShooter extends Command {
         double setpointAccelRPS2 = (nextSetpoint.velocity - setpointState.velocity) / ShooterConstants.loopPeriodSecs;
         setpointState = nextSetpoint;
 
-        double motorOneVelocityRPS = s_Shooter.getMotorOneVelocityInRPS();
+        double topMotorVelocityRPS = s_Shooter.getTopMotorVelocityInRPS();
 
-        double motorOneVoltsFF = motorOneFF.calculate(setpointState.velocity, setpointAccelRPS2);
+        double topMotorVoltsFF = topMotorFF.calculate(setpointState.velocity, setpointAccelRPS2);
 
-        double motorOneVoltsPID = motorOnePIDController.calculate(motorOneVelocityRPS, setpointState.velocity);
+        double topMotorVoltsPID = topMotorPIDController.calculate(topMotorVelocityRPS, setpointState.velocity);
 
-        double motorOneVolts = MathUtil.clamp(motorOneVoltsFF + motorOneVoltsPID, -ShooterConstants.maxVoltage, ShooterConstants.maxVoltage);
+        double topMotorVolts = MathUtil.clamp(topMotorVoltsFF + topMotorVoltsPID, -ShooterConstants.maxVoltage, ShooterConstants.maxVoltage);
 
-        s_Shooter.setMotorOneSpeed(motorOneVolts / ShooterConstants.maxVoltage);
+        s_Shooter.setTopMotorVoltage(topMotorVolts);
 
     }
 
